@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nyasha Mpinda — Inner Creativity</title>
+
+    <!--
+      =============================================
+      PRO PORTFOLIO (Single-file)
+      Built with Tailwind CSS (via CDN) + Alpine.js
+      - Fully responsive
+      - Accessible
+      - Clean, maintainable, and heavily commented for easy edits
+      - Light/Dark mode toggle
+      - Mobile nav drawer
+      - Project cards (images + videos)
+      - Contact section with actionable links
+      - SEO + social meta + JSON-LD structured data
+      =============================================
+      HOW TO EDIT:
+      - Update the PROFILE + LINKS in the "Site Settings" script below.
+      - Replace placeholder images (e.g., /assets/profile.jpg) with your own.
+      - Update project entries inside the #projects section.
+      - Tailwind classes control spacing, colors, etc. Adjust as needed.
+    -->
+
+    <!-- Favicon -->
+    <link rel="icon" href="assets/Images/Logo/logo.png" />
+
+    <!-- Google Font: Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Tailwind CSS via CDN (latest) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      // Tailwind Config: extend theme for brand colors and font
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: { sans: ["Poppins", "ui-sans-serif", "system-ui"] },
+            colors: {
+              brand: {
+                50: "#f3faf3",
+                100: "#e3f5e4",
+                200: "#c6e9c8",
+                300: "#9fdaa4",
+                400: "#6bc671",
+                500: "#3aaa43", // primary brand
+                600: "#2f8c36",
+                700: "#296f2e",
+                800: "#235828",
+                900: "#1d4922",
+              },
+            },
+            boxShadow: {
+              soft: "0 10px 30px rgba(0,0,0,0.06)",
+            },
+          },
+        },
+        darkMode: "class",
+      };
+    </script>
+
+    <!-- Alpine.js for interactivity (menu + theme toggle) -->
+    <script
+      defer
+      src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"
+    ></script>
+
+    <!-- Primary Meta Tags -->
+    <meta name="title" content="Nyasha Mpinda — Inner Creativity" />
+    <meta
+      name="description"
+      content="Innovator from Malawi (the Warm Heart of Africa). I learn, build, and teach through projects — from medical tech to robotics, games, and IoT."
+    />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Nyasha Mpinda — Inner Creativity" />
+    <meta
+      property="og:description"
+      content="Innovator from Malawi. I learn, build, and teach through hands-on projects and tutorials."
+    />
+    <meta property="og:image" content="/assets/og-cover.jpg" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Nyasha Mpinda — Inner Creativity" />
+    <meta
+      name="twitter:description"
+      content="Innovator from Malawi. I learn, build, and teach through hands-on projects and tutorials."
+    />
+    <meta name="twitter:image" content="/assets/og-cover.jpg" />
+
+    <!-- JSON-LD: Person Schema for better SEO -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Nyasha Mpinda",
+        "url": "https://example.com/",
+        "sameAs": [
+          "https://www.youtube.com/@nyashampinda2435",
+          "https://www.instagram.com/your-instagram",
+          "https://wa.me/265XXXXXXXXX"
+        ],
+        "jobTitle": "IT Innovator & Maker",
+        "affiliation": {
+          "@type": "CollegeOrUniversity",
+          "name": "Malawi University of Business and Applied Sciences (MUBAS)",
+          "url": "http://www.mubas.ac.mw/"
+        }
+      }
+    </script>
+
+    <style>
+      /* Minimal base tweaks; most styling is Tailwind classes */
+      html {
+        scroll-behavior: smooth;
+      }
+      /* Hide the default focus outline only if a custom ring is applied via Tailwind */
+      .focus-none:focus {
+        outline: none;
+      }
+    </style>
+  </head>
+
+  <!--
+    Use Alpine state root to keep theme & menu state global
+  -->
+  <body
+    x-data="siteState()"
+    :class="{ 'dark bg-neutral-950 text-neutral-100': dark }"
+    class="font-sans antialiased text-neutral-800"
+  >
+    <!-- =======================
+         Site Settings (Easy edits)
+         ======================= -->
+    <script>
+      function siteState() {
+        return {
+          // Theme state — persisted in localStorage
+          dark: JSON.parse(localStorage.getItem("ic_theme_dark") ?? "false"),
+          toggleTheme() {
+            this.dark = !this.dark;
+            localStorage.setItem("ic_theme_dark", JSON.stringify(this.dark));
+          },
+          // Mobile menu state
+          menuOpen: false,
+          // Profile + Links (edit these!)
+          profile: {
+            name: "Nyasha Mpinda",
+            title: "IT Innovator • Maker • Mentor",
+            location: "Blantyre, Malawi",
+            tagline:
+              "I learn, build, and teach through hands-on projects — turning Inner Creativity into real-world impact.",
+            avatar: "assets/Images/Portraits/nyasha.jpg", // Replace with your profile image
+            logo: "assets/Images/Logo/logo.png", // Replace with your logo
+            resume: "assets/CV/CV_NyashaMpinda.pdf", // Optional: link to your CV
+            contacts: {
+              email: "mailto:nyasha20mpinda@gmail.com",
+              whatsapp: "https://wa.me/265998790208",
+              instagram: "https://www.instagram.com/your-instagram",
+              youtube: "https://www.youtube.com/@nyashampinda2435",
+            },
+          },
+        };
+      }
+    </script>
+
+    <!-- ============ NAVBAR ============ -->
+    <header
+      class="sticky top-0 z-50 backdrop-blur supports-[backdrop-filter]:bg-white/70 dark:supports-[backdrop-filter]:bg-neutral-900/60 bg-white/80 dark:bg-neutral-900/80 border-b border-neutral-200 dark:border-neutral-800"
+    >
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="flex h-16 items-center justify-between">
+          <!-- Brand -->
+          <a href="#home" class="flex items-center gap-3">
+            <img
+              :src="profile.logo"
+              alt="Inner Creativity logo"
+              class="h-9 w-9 rounded-xl shadow-soft"
+            />
+            <span class="sr-only">Inner Creativity</span>
+            <span class="hidden sm:inline text-sm font-semibold tracking-wide"
+              >Inner Creativity</span
+            >
+          </a>
+
+          <!-- Desktop Nav -->
+          <nav class="hidden md:flex items-center gap-6 text-sm">
+            <a
+              href="#home"
+              class="hover:text-brand-600 dark:hover:text-brand-400"
+              >Home</a
+            >
+            <a
+              href="#projects"
+              class="hover:text-brand-600 dark:hover:text-brand-400"
+              >Projects</a
+            >
+            <a
+              href="#about"
+              class="hover:text-brand-600 dark:hover:text-brand-400"
+              >About</a
+            >
+            <a
+              href="#tutorials"
+              class="hover:text-brand-600 dark:hover:text-brand-400"
+              >Tutorials</a
+            >
+            <a
+              href="#contact"
+              class="hover:text-brand-600 dark:hover:text-brand-400"
+              >Contact</a
+            >
+            <a
+              :href="profile.resume"
+              class="inline-flex items-center gap-2 rounded-xl bg-brand-500 px-3 py-2 font-medium text-white hover:bg-brand-600 active:bg-brand-700 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500/60"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                class="h-4 w-4"
+              >
+                <path d="M12 16.5l4.5-4.5h-3V3h-3v9h-3l4.5 4.5z" />
+                <path d="M4 19.5h16v3H4z" />
+              </svg>
+              Resume
+            </a>
+            <button
+              @click="toggleTheme"
+              class="rounded-xl px-2 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 focus-visible:ring-2 focus-visible:ring-brand-500/60"
+              aria-label="Toggle theme"
+            >
+              <!-- Sun / Moon icon swap -->
+              <!--SUN ICON-->
+              <template x-if="!dark">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="h-5 w-5"
+                >
+                  <circle cx="12" cy="12" r="5" />
+                  <line x1="12" y1="1" x2="12" y2="3" />
+                  <line x1="12" y1="21" x2="12" y2="23" />
+                  <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+                  <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+                  <line x1="1" y1="12" x2="3" y2="12" />
+                  <line x1="21" y1="12" x2="23" y2="12" />
+                  <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+                  <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+                </svg>
+              </template>
+
+              <!--MOON ICON-->
+              <template x-if="dark">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  class="h-5 w-5"
+                >
+                  <path d="M21.64 13A9 9 0 1111 2.36a7 7 0 0010.64 10.64z" />
+                </svg>
+              </template>
+            </button>
+          </nav>
+
+          <!-- Mobile controls -->
+          <div class="flex items-center gap-2 md:hidden">
+            <button
+              @click="toggleTheme"
+              class="rounded-xl p-2 hover:bg-neutral-100 dark:hover:bg-neutral-800"
+              aria-label="Toggle theme"
+            >
+              <template x-if="!dark">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  class="h-5 w-5"
+                >
+                  <path d="M12 18a6 6 0 100-12 6 6 0 000 12z" />
+                </svg>
+              </template>
+              <template x-if="dark">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  class="h-5 w-5"
+                >
+                  <path d="M21.64 13A9 9 0 1111 2.36a7 7 0 0010.64 10.64z" />
+                </svg>
+              </template>
+            </button>
+            <button
+              @click="menuOpen = !menuOpen"
+              class="rounded-xl p-2 hover:bg-neutral-100 dark:hover:bg-neutral-800"
+              aria-label="Open menu"
+              aria-expanded="false"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                class="h-6 w-6"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Mobile Menu Drawer -->
+        <div
+          x-show="menuOpen"
+          x-transition.origin.top.left
+          @click.outside="menuOpen = false"
+          class="md:hidden border-t border-neutral-200 dark:border-neutral-800"
+        >
+          <nav class="flex flex-col gap-1 py-3 text-sm">
+            <a
+              @click="menuOpen=false"
+              href="#home"
+              class="px-3 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-lg"
+              >Home</a
+            >
+            <a
+              @click="menuOpen=false"
+              href="#projects"
+              class="px-3 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-lg"
+              >Projects</a
+            >
+            <a
+              @click="menuOpen=false"
+              href="#about"
+              class="px-3 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-lg"
+              >About</a
+            >
+            <a
+              @click="menuOpen=false"
+              href="#tutorials"
+              class="px-3 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-lg"
+              >Tutorials</a
+            >
+            <a
+              @click="menuOpen=false"
+              href="#contact"
+              class="px-3 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-lg"
+              >Contact</a
+            >
+            <a
+              :href="profile.resume"
+              class="mx-3 mt-2 inline-flex items-center justify-center gap-2 rounded-xl bg-brand-500 px-3 py-2 font-medium text-white hover:bg-brand-600 active:bg-brand-700"
+              >Resume</a
+            >
+          </nav>
+        </div>
+      </div>
+    </header>
+
+    <!-- ============ HERO ============ -->
+    <section id="home" class="relative overflow-hidden">
+      <!-- Decorative gradient blob -->
+      <div
+        aria-hidden="true"
+        class="pointer-events-none absolute -left-24 -top-24 h-72 w-72 rounded-full bg-brand-500/20 blur-3xl dark:bg-brand-400/20"
+      ></div>
+
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div
+          class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center py-16 md:py-24"
+        >
+          <!-- Intro Copy -->
+          <div>
+            <p
+              class="mb-3 inline-flex items-center gap-2 rounded-full border border-brand-500/20 bg-brand-500/10 px-3 py-1 text-xs font-medium text-brand-700 dark:text-brand-300"
+            >
+              <span
+                class="inline-block h-2 w-2 rounded-full bg-brand-500"
+              ></span>
+              The Warm Heart of Africa — Malawi
+            </p>
+            <h1
+              class="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight"
+            >
+              Hi, I'm
+              <span class="text-brand-600 dark:text-brand-400"
+                >Nyasha Mpinda</span
+              >
+            </h1>
+            <p
+              class="mt-4 text-base sm:text-lg text-neutral-600 dark:text-neutral-300"
+            >
+              <span x-text="profile.tagline"></span>
+            </p>
+
+            <!-- Quick Actions -->
+            <div class="mt-8 flex flex-wrap items-center gap-3">
+              <a
+                href="#projects"
+                class="inline-flex items-center gap-2 rounded-xl bg-brand-500 px-4 py-2.5 text-white font-medium hover:bg-brand-600 active:bg-brand-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500/60"
+              >
+                View Projects
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  class="h-5 w-5"
+                >
+                  <path d="M13.5 4.5l6 6-6 6M3 12h15" />
+                </svg>
+              </a>
+              <a
+                href="#contact"
+                class="inline-flex items-center gap-2 rounded-xl border border-neutral-300 dark:border-neutral-700 px-4 py-2.5 font-medium hover:bg-neutral-50 dark:hover:bg-neutral-800"
+              >
+                Get in Touch
+              </a>
+            </div>
+
+            <!-- Socials -->
+            <div class="mt-6 flex items-center gap-4">
+              <a
+                :href="profile.contacts.whatsapp"
+                class="group"
+                aria-label="WhatsApp"
+              >
+                <svg
+                  class="h-6 w-6 text-neutral-500 group-hover:text-brand-600 dark:group-hover:text-brand-400"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <path
+                    d="M20.52 3.48A11.94 11.94 0 0012 0C5.37 0 0 5.37 0 12c0 2.12.55 4.11 1.52 5.84L0 24l6.33-1.66A11.93 11.93 0 0012 24C18.63 24 24 18.63 24 12c0-3.2-1.25-6.21-3.48-8.52zM12 21.6a9.6 9.6 0 01-4.91-1.35l-.35-.21-3.76.98 1-3.67-.23-.38A9.6 9.6 0 1121.6 12 9.6 9.6 0 0112 21.6zm5.5-6.86c-.3-.15-1.76-.86-2.03-.96-.27-.1-.47-.15-.67.15-.2.31-.77.96-.95 1.16-.18.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.47-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.47.13-.62.13-.13.3-.35.45-.53.15-.18.2-.31.3-.51.1-.2.05-.37-.03-.52-.08-.15-.67-1.61-.92-2.2-.24-.58-.49-.5-.67-.51l-.57-.01c-.2 0-.52.07-.79.37-.27.31-1.04 1.02-1.04 2.49s1.06 2.89 1.21 3.09c.15.2 2.08 3.18 5.03 4.46.7.3 1.25.48 1.68.61.7.22 1.33.19 1.83.12.56-.08 1.76-.72 2.01-1.42.25-.7.25-1.29.17-1.42-.08-.13-.27-.2-.57-.35z"
+                  />
+                </svg>
+              </a>
+              <a
+                :href="profile.contacts.instagram"
+                class="group"
+                aria-label="Instagram"
+              >
+                <svg
+                  class="h-6 w-6 text-neutral-500 group-hover:text-brand-600 dark:group-hover:text-brand-400"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <path
+                    d="M12 2.2c3.2 0 3.584.012 4.85.07 1.17.056 1.97.24 2.43.4.61.21 1.04.46 1.5.92.46.46.71.89.92 1.5.16.46.34 1.26.4 2.43.06 1.27.07 1.65.07 4.85s-.012 3.584-.07 4.85c-.056 1.17-.24 1.97-.4 2.43-.21.61-.46 1.04-.92 1.5-.46.46-.89.71-1.5.92-.46.16-1.26.34-2.43.4-1.27.06-1.65.07-4.85.07s-3.584-.012-4.85-.07c-1.17-.056-1.97-.24-2.43-.4-.61-.21-1.04-.46-1.5-.92-.46-.46-.71-.89-.92-1.5-.16-.46-.34-1.26-.4-2.43C2.212 15.584 2.2 15.2 2.2 12s.012-3.584.07-4.85c.056-1.17.24-1.97.4-2.43.21-.61.46-1.04.92-1.5.46-.46.89-.71 1.5-.92.46-.16 1.26-.34 2.43-.4C8.416 2.212 8.8 2.2 12 2.2zm0 1.8c-3.16 0-3.53.012-4.77.07-1.03.048-1.59.22-1.96.36-.49.19-.83.42-1.2.79-.37.37-.6.71-.79 1.2-.14.37-.31.93-.36 1.96-.06 1.24-.07 1.61-.07 4.77s.012 3.53.07 4.77c.048 1.03.22 1.59.36 1.96.19.49.42.83.79 1.2.37.37.71.6 1.2.79.37.14.93.31 1.96.36 1.24.06 1.61.07 4.77.07s3.53-.012 4.77-.07c1.03-.048 1.59-.22 1.96-.36.49-.19.83-.42 1.2-.79.37-.37.6-.71.79-1.2.14-.37.31-.93.36-1.96.06-1.24.07-1.61.07-4.77s-.012-3.53-.07-4.77c-.048-1.03-.22-1.59-.36-1.96-.19-.49-.42-.83-.79-1.2-.37-.37-.71-.6-1.2-.79-.37-.14-.93-.31-1.96-.36-1.24-.06-1.61-.07-4.77-.07zm0 3.3a6.7 6.7 0 110 13.4 6.7 6.7 0 010-13.4zm0 1.8a4.9 4.9 0 100 9.8 4.9 4.9 0 000-9.8zm5.1-2.22a1.56 1.56 0 110 3.12 1.56 1.56 0 010-3.12z"
+                  />
+                </svg>
+              </a>
+              <a
+                :href="profile.contacts.youtube"
+                class="group"
+                aria-label="YouTube"
+              >
+                <svg
+                  class="h-6 w-6 text-neutral-500 group-hover:text-brand-600 dark:group-hover:text-brand-400"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <path
+                    d="M23.5 6.2s-.23-1.6-.93-2.3c-.89-.93-1.88-.94-2.33-1C16.9 2.5 12 2.5 12 2.5h-.01s-4.9 0-8.23.4c-.46.06-1.44.07-2.34 1-.7.7-.92 2.3-.92 2.3S0 7.99 0 9.79v1.42c0 1.8.5 3.58.5 3.58s.23 1.6.93 2.3c.9.93 2.08.9 2.61 1 1.9.18 8 .4 8 .4s4.9 0 8.24-.4c.46-.06 1.44-.07 2.33-1 .7-.7.93-2.3.93-2.3s.5-1.78.5-3.58V9.8c0-1.8-.5-3.6-.5-3.6zM9.6 14.5V7.9l6.2 3.3-6.2 3.3z"
+                  />
+                </svg>
+              </a>
+            </div>
+          </div>
+
+          <!-- Portrait Card -->
+          <div class="relative">
+            <div
+              class="mx-auto max-w-sm rounded-3xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-4 shadow-soft"
+            >
+              <img
+                :src="profile.avatar"
+                alt="Portrait of Nyasha Mpinda"
+                class="h-auto w-full rounded-2xl object-cover"
+              />
+              <div class="p-4">
+                <h2 class="text-xl font-semibold" x-text="profile.name"></h2>
+                <p
+                  class="text-sm text-neutral-600 dark:text-neutral-300"
+                  x-text="profile.title"
+                ></p>
+                <p
+                  class="mt-2 text-xs text-neutral-500"
+                  x-text="profile.location"
+                ></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ PROJECTS ============ -->
+    <section
+      id="projects"
+      class="py-20 bg-neutral-50 dark:bg-neutral-950/40 border-y border-neutral-200 dark:border-neutral-800"
+    >
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="mb-10 flex items-end justify-between">
+          <div>
+            <h2 class="text-2xl sm:text-3xl font-bold">Project Gallery</h2>
+            <p class="mt-2 text-neutral-600 dark:text-neutral-300 max-w-2xl">
+              A selection of recent and past work across robotics, medical tech,
+              flood monitoring, and game development. Each project focuses on
+              practical impact and learning-by-building.
+            </p>
+          </div>
+          <a
+            href="#contact"
+            class="hidden sm:inline-block text-sm font-medium text-brand-600 dark:text-brand-400 hover:underline"
+            >Need something similar? Let's talk →</a
+          >
+        </div>
+
+        <!-- Project Grid -->
+        <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <!-- Card: First Global Robotics 2020 -->
+          <article
+            class="group overflow-hidden rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 shadow-soft"
+          >
+            <img
+              src="assets/Images/Project_Images/project2.jpg"
+              alt="Team Malawi at First Global Robotics"
+              class="h-48 w-full object-cover transition duration-300 group-hover:scale-[1.02]"
+            />
+            <div class="p-5">
+              <h3 class="text-lg font-semibold">
+                First Global Robotics (Team Malawi)
+              </h3>
+              <p class="mt-1 text-sm text-neutral-600 dark:text-neutral-300">
+                Selected to join the school team representing Malawi at the
+                First Global Robotics challenge. Worked on strategy, robot
+                assembly, and programming.
+              </p>
+              <div class="mt-4 flex items-center justify-between text-sm">
+                <span
+                  class="rounded-full bg-neutral-100 dark:bg-neutral-800 px-3 py-1"
+                  >Robotics</span
+                >
+                <a
+                  href="https://first.global/2019-nations/malawi-2019/"
+                  class="font-medium text-brand-600 dark:text-brand-400 hover:underline"
+                  >Found out More</a
+                >
+              </div>
+            </div>
+          </article>
+
+          <!-- Card: Low-Cost Infant Incubator -->
+          <article
+            class="group overflow-hidden rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 shadow-soft"
+          >
+            <div class="aspect-video w-full">
+              <!-- Replace source with your local file if hosting yourself -->
+              <video
+                class="h-full w-full object-cover"
+                controls
+                poster="assets/ThumbNails/Incubators.png"
+              >
+                <source
+                  src="assets/Videos/Projects/incubator project.mp4"
+                  type="video/mp4"
+                />
+              </video>
+            </div>
+            <div class="p-5">
+              <h3 class="text-lg font-semibold">Low‑Cost Infant Incubator</h3>
+              <p class="mt-1 text-sm text-neutral-600 dark:text-neutral-300">
+                Prototyped an affordable incubator to improve neonatal care
+                access. Focus on temperature control, alarms, and safety — built
+                with locally available parts.
+              </p>
+              <div class="mt-4 flex items-center justify-between text-sm">
+                <span
+                  class="rounded-full bg-neutral-100 dark:bg-neutral-800 px-3 py-1"
+                  >MedTech</span
+                >
+                <a
+                  href="#"
+                  class="font-medium text-brand-600 dark:text-brand-400 hover:underline"
+                  >Read more</a
+                >
+              </div>
+            </div>
+          </article>
+
+          <!-- Card: Flood Monitoring System -->
+          <article
+            class="group overflow-hidden rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 shadow-soft"
+          >
+            <div class="aspect-video w-full">
+              <video
+                class="h-full w-full object-cover"
+                controls
+                poster="assets/ThumbNails/Malawi Flooding.png"
+              >
+                <source
+                  src="assets/Videos/Projects/floodSystem.mp4"
+                  type="video/mp4"
+                />
+              </video>
+            </div>
+            <div class="p-5">
+              <h3 class="text-lg font-semibold">Flood Monitoring System</h3>
+              <p class="mt-1 text-sm text-neutral-600 dark:text-neutral-300">
+                Designed an IoT solution for early flood alerts using sensors
+                and a simple dashboard. Emphasis on reliability and
+                cost‑effectiveness for vulnerable communities.
+              </p>
+              <div class="mt-4 flex items-center justify-between text-sm">
+                <span
+                  class="rounded-full bg-neutral-100 dark:bg-neutral-800 px-3 py-1"
+                  >IoT</span
+                >
+                <a
+                  href="https://www.facebook.com/share/p/15b1xgRaed/"
+                  class="font-medium text-brand-600 dark:text-brand-400 hover:underline"
+                  target="_blank"
+                  rel="noopener"
+                  >Find out More</a
+                >
+              </div>
+            </div>
+          </article>
+
+          <!-- Card: UE5 RPG Demo -->
+          <article
+            class="group overflow-hidden rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 shadow-soft"
+          >
+            <div class="aspect-video w-full">
+              <video
+                class="h-full w-full object-cover"
+                controls
+                poster="assets/ThumbNails/arrow.png"
+              >
+                <source
+                  src="assets/Videos/Projects/UE5_Project.mp4"
+                  type="video/mp4"
+                />
+              </video>
+            </div>
+            <div class="p-5">
+              <h3 class="text-lg font-semibold">
+                RPG Prototype — Unreal Engine 5
+              </h3>
+              <p class="mt-1 text-sm text-neutral-600 dark:text-neutral-300">
+                Explored gameplay systems, combat feel, and environment art in
+                UE5. A fun experiment blending design, code, and creativity.
+              </p>
+              <div class="mt-4 flex items-center justify-between text-sm">
+                <span
+                  class="rounded-full bg-neutral-100 dark:bg-neutral-800 px-3 py-1"
+                  >Game Dev</span
+                >
+                <a
+                  href="#"
+                  class="font-medium text-brand-600 dark:text-brand-400 hover:underline"
+                  >Demo notes</a
+                >
+              </div>
+            </div>
+          </article>
+
+          <!-- Add more cards as needed... -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ ABOUT ============ -->
+    <section id="about" class="py-20">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="grid gap-10 md:grid-cols-2">
+          <div>
+            <h2 class="text-2xl sm:text-3xl font-bold">About Me</h2>
+            <p class="mt-4 text-neutral-600 dark:text-neutral-300">
+              I'm an IT <b>Graduate</b> from
+              <a
+                href="http://www.mubas.ac.mw/"
+                class="text-brand-600 dark:text-brand-400 underline"
+                target="_blank"
+                rel="noopener"
+                >MUBAS</a
+              >
+              University located in Malawi. I enjoy turning ideas into
+              prototypes and sharing what I learn so others can build too. My
+              interests include embedded systems, IoT, web apps, and
+              human‑centered design for healthcare and education.
+            </p>
+            <ul class="mt-6 grid grid-cols-2 gap-3 text-sm">
+              <li
+                class="rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 px-4 py-3"
+              >
+                C/C++ • Python • JS
+              </li>
+              <li
+                class="rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 px-4 py-3"
+              >
+                Arduino • Raspberry Pi
+              </li>
+              <li
+                class="rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 px-4 py-3"
+              >
+                Node • Express • MySQL
+              </li>
+              <li
+                class="rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 px-4 py-3"
+              >
+                Tailwind • Bootstrap
+              </li>
+            </ul>
+          </div>
+          <div
+            class="rounded-3xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-6 shadow-soft"
+          >
+            <h3 class="text-lg font-semibold">Mission</h3>
+            <p class="mt-2 text-sm text-neutral-600 dark:text-neutral-300">
+              Use <span class="font-semibold">Inner Creativity</span> to build
+              and impart practical skills to aspiring innovators through a
+              friendly, interactive platform. I publish projects, tutorials, and
+              open resources that help people start where they are and grow.
+            </p>
+            <h3 class="mt-6 text-lg font-semibold">What I can help with</h3>
+            <ul
+              class="mt-2 list-disc pl-5 text-sm text-neutral-700 dark:text-neutral-300"
+            >
+              <li>Rapid prototyping (electronics + software)</li>
+              <li>Setting up dashboards and IoT data pipelines</li>
+              <li>Mentoring students and clubs</li>
+              <li>Talks/workshops for schools & communities</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ TUTORIALS ============ -->
+    <section
+      id="tutorials"
+      class="py-20 bg-neutral-50 dark:bg-neutral-950/40 border-y border-neutral-200 dark:border-neutral-800"
+    >
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="mb-10">
+          <h2 class="text-2xl sm:text-3xl font-bold">Tutorials & Resources</h2>
+          <p class="mt-2 text-neutral-600 dark:text-neutral-300">
+            Beginner‑friendly guides that focus on doing. New content posted as
+            projects evolve.
+          </p>
+        </div>
+
+        <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <!-- Tutorial card example -->
+          <article
+            class="rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-5 shadow-soft"
+          >
+            <h3 class="font-semibold">Getting Started with Arduino Sensors</h3>
+            <p class="mt-2 text-sm text-neutral-600 dark:text-neutral-300">
+              Wire up, read values, and push data to a simple web dashboard.
+            </p>
+            <a
+              href="#"
+              class="mt-4 inline-flex items-center gap-2 text-sm font-medium text-brand-600 dark:text-brand-400 hover:underline"
+              >Open guide</a
+            >
+          </article>
+
+          <article
+            class="rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-5 shadow-soft"
+          >
+            <h3 class="font-semibold">Express + MySQL Quickstart</h3>
+            <p class="mt-2 text-sm text-neutral-600 dark:text-neutral-300">
+              Build a simple API and connect it to a dashboard UI.
+            </p>
+            <a
+              href="#"
+              class="mt-4 inline-flex items-center gap-2 text-sm font-medium text-brand-600 dark:text-brand-400 hover:underline"
+              >Open guide</a
+            >
+          </article>
+
+          <article
+            class="rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-5 shadow-soft"
+          >
+            <h3 class="font-semibold">Prototyping MedTech Responsibly</h3>
+            <p class="mt-2 text-sm text-neutral-600 dark:text-neutral-300">
+              Ethics, safety, and practical tips when building for healthcare
+              contexts.
+            </p>
+            <a
+              href="#"
+              class="mt-4 inline-flex items-center gap-2 text-sm font-medium text-brand-600 dark:text-brand-400 hover:underline"
+              >Open guide</a
+            >
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CONTACT ============ -->
+    <section id="contact" class="py-20">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="grid gap-10 md:grid-cols-2 items-start">
+          <div>
+            <h2 class="text-2xl sm:text-3xl font-bold">Contact</h2>
+            <p class="mt-2 text-neutral-600 dark:text-neutral-300">
+              For collaborations, speaking, or mentorship, reach out via email
+              or WhatsApp. I aim to reply within a day.
+            </p>
+            <div class="mt-6 flex flex-col gap-3">
+              <a
+                :href="profile.contacts.email"
+                class="inline-flex items-center gap-3 rounded-2xl border border-neutral-300 dark:border-neutral-700 px-4 py-3 hover:bg-neutral-50 dark:hover:bg-neutral-800"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  class="h-5 w-5"
+                >
+                  <path
+                    d="M1.5 6.75A2.25 2.25 0 013.75 4.5h16.5a2.25 2.25 0 012.25 2.25v10.5A2.25 2.25 0 0120.25 19.5H3.75a2.25 2.25 0 01-2.25-2.25V6.75zm2.4-.75l7.35 5.145L18.6 6h-14.7z"
+                  />
+                </svg>
+                nyasha20mpinda@gmail.com
+              </a>
+              <a
+                :href="profile.contacts.whatsapp"
+                target="_blank"
+                rel="noopener"
+                class="inline-flex items-center gap-3 rounded-2xl border border-neutral-300 dark:border-neutral-700 px-4 py-3 hover:bg-neutral-50 dark:hover:bg-neutral-800"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  class="h-5 w-5"
+                >
+                  <path
+                    d="M20.52 3.48A11.94 11.94 0 0012 0C5.37 0 0 5.37 0 12c0 2.12.55 4.11 1.52 5.84L0 24l6.33-1.66A11.93 11.93 0 0012 24C18.63 24 24 18.63 24 12c0-3.2-1.25-6.21-3.48-8.52zM12 21.6a9.6 9.6 0 01-4.91-1.35l-.35-.21-3.76.98 1-3.67-.23-.38A9.6 9.6 0 1121.6 12 9.6 9.6 0 0112 21.6z"
+                  />
+                </svg>
+                WhatsApp me
+              </a>
+            </div>
+          </div>
+
+          <!-- Simple Contact Form (no backend) -->
+          <form
+            class="rounded-3xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 p-6 shadow-soft"
+            action="https://formspree.io/f/xblknyqb"
+            method="POST"
+          >
+            <!-- NOTE: Replace action with your Formspree endpoint or backend route. -->
+            <div class="grid gap-4">
+              <div>
+                <label for="name" class="text-sm font-medium">Your name</label>
+                <input
+                  id="name"
+                  name="name"
+                  type="text"
+                  required
+                  class="mt-1 w-full rounded-xl border border-neutral-300 dark:border-neutral-700 bg-transparent px-3 py-2 focus:border-brand-500 focus:outline-none"
+                />
+              </div>
+              <div>
+                <label for="email" class="text-sm font-medium">Email</label>
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  required
+                  class="mt-1 w-full rounded-xl border border-neutral-300 dark:border-neutral-700 bg-transparent px-3 py-2 focus:border-brand-500 focus:outline-none"
+                />
+              </div>
+              <div>
+                <label for="message" class="text-sm font-medium">Message</label>
+                <textarea
+                  id="message"
+                  name="message"
+                  rows="4"
+                  required
+                  class="mt-1 w-full rounded-xl border border-neutral-300 dark:border-neutral-700 bg-transparent px-3 py-2 focus:border-brand-500 focus:outline-none"
+                ></textarea>
+              </div>
+              <button
+                type="submit"
+                class="mt-2 inline-flex items-center justify-center gap-2 rounded-xl bg-brand-500 px-4 py-2.5 text-white font-medium hover:bg-brand-600 active:bg-brand-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500/60"
+              >
+                Send Message
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ FOOTER ============ -->
+    <footer class="border-t border-neutral-200 dark:border-neutral-800 py-8">
+      <div
+        class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm"
+      >
+        <p class="text-neutral-500">
+          © <span id="year"></span> Inner Creativity — Nyasha Mpinda. All rights
+          reserved.
+        </p>
+        <div class="flex items-center gap-4">
+          <a href="#home" class="hover:underline">Back to top</a>
+          <a href="#contact" class="hover:underline">Hire me</a>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Utility: set current year -->
+    <script>
+      document.getElementById("year").textContent = new Date().getFullYear();
+    </script>
+  </body>
+</html>
